@@ -1,9 +1,9 @@
 # ak1fate.github.io
 
-#Comp-Sci 30
+# Comp-Sci 30
 
-##Demos
+## Demos
 - [Square-Moving](SquareMoving)
 
-#Projects
+# Projects
 - [Interactive-Scene](InteractiveScene)
