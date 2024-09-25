@@ -6,9 +6,12 @@
 // changing according to time. You may want to investigate the millis()
 // function at https://p5js.org/reference/#/p5/millis
 
-let lightState = red;
+let lightState = "green";
+let lastSwichTime = 0;
 
-let someTime = 2000;
+const GREEN_LIGHT_DURATION = 3000;
+const YELLOW_LIGHT_DURATION = 1500;
+const RED_LIGHT_DURATION = 3000;
 
 function setup() {
   createCanvas(600, 600);
@@ -17,6 +20,8 @@ function setup() {
 function draw() {
   background(255);
   drawOutlineOfLights();
+  changeStateIfNeeded();
+  changeLightState();
 }
 
 function drawOutlineOfLights() {
@@ -24,16 +29,44 @@ function drawOutlineOfLights() {
   rectMode(CENTER);
   fill(0);
   rect(width/2, height/2, 75, 200, 10);
-
-  lights
-  fill("red");
+  //lights
+  fill("grey");
   ellipse(width/2, height/2 - 65, 50, 50); //top
-  fill("yellow");
+  fill("grey");
   ellipse(width/2, height/2, 50, 50); //middle
-  fill("green");
+  fill("grey");
   ellipse(width/2, height/2 + 65, 50, 50); //bottom
 }
 
 function changeLightState(){
+  if (lightState === "green"){
+    fill("green");
+    ellipse(width/2, height/2 + 65, 50, 50); //bottom
+  } 
 
+  else if (lightState === "yellow"){
+    fill("yellow");
+    ellipse(width/2, height/2, 50, 50); //middle
+  }
+  else if (lightState === "red"){
+    fill("red");
+    ellipse(width/2, height/2 - 65, 50, 50); //top
+  }
+}
+
+function changeStateIfNeeded(){
+  if (lightState === "green" && millis() > lastSwichTime + GREEN_LIGHT_DURATION){
+    lightState = "yellow";
+    lastSwichTime = millis();
+  }
+
+  else if (lightState === "yellow" && millis() > lastSwichTime + YELLOW_LIGHT_DURATION){
+    lightState = "red";
+    lastSwichTime = millis();
+  }
+
+  else if (lightState === "red" && millis() > lastSwichTime + RED_LIGHT_DURATION){
+    lightState = "green";
+    lastSwichTime = millis();
+  }
 }
