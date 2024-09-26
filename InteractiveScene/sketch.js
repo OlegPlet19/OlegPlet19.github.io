@@ -18,8 +18,13 @@ let g = 255;
 let b = 255;
 
 // player 1
-let playerX = 50;
-let playerY = 250;
+let playerOneX = 50;
+let playerOneY = 250;
+
+//player 2
+let playerTwoX = 0;
+let playerTwoY = 0;
+
 let playerHeight = 100;
 let playerWidth = 25;
 
@@ -35,11 +40,11 @@ function draw() {
   displayBall();
   displayPlayer1();
 
-  if (keyIsDown(87) && playerY > 0){
-    playerY -= 5; 
+  if (keyIsDown(87) && playerOneY > 0){
+    playerOneY -= 5; 
   }
-  else if (keyIsDown(83) && playerY < 500 - playerHeight){
-    playerY += 5;
+  else if (keyIsDown(83) && playerOneY < 500 - playerHeight){
+    playerOneY += 5;
   } 
 }
 
@@ -51,12 +56,16 @@ function moveBall() {
 
 function bounceBall() {
   // checking collision with player
+  if (ball_x <= playerOneX + ballRadius + playerWidth / 2){
+    console.log("On line of hit");
 
+    if (ball_y >= playerOneY && ball_y <= playerOneY + playerHeight) {
+      console.log("bounce");
 
-  // if (ball_x === playerX - playerWidth && ball_y === playerY + playerHeight/2 || ball_y === playerY - playerHeight){
-  //   ball_dx = ball_dx * -1;
-  //   pickRandomColor();
-  // }
+      ball_dx *= -1;
+      pickRandomColor();
+    }
+  }
 
   //bounce if needed
   if (ball_x >= width - ballRadius || ball_x <= 0 + ballRadius) {
@@ -84,5 +93,5 @@ function displayBall() {
 
 function displayPlayer1(){
   fill("black");
-  rect(playerX, playerY, playerWidth, playerHeight);
+  rect(playerOneX, playerOneY, playerWidth, playerHeight);
 }
