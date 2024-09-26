@@ -50,14 +50,20 @@ function moveBall() {
 }
 
 function bounceBall() {
-  // xhecking collision with player
-  if (ball_x === playerX - playerWidth)
+  // checking collision with player
+
+
+  // if (ball_x === playerX - playerWidth && ball_y === playerY + playerHeight/2 || ball_y === playerY - playerHeight){
+  //   ball_dx = ball_dx * -1;
+  //   pickRandomColor();
+  // }
 
   //bounce if needed
   if (ball_x >= width - ballRadius || ball_x <= 0 + ballRadius) {
     ball_dx = ball_dx * -1;
     pickRandomColor();
   }
+
   if (ball_y >= height - ballRadius || ball_y <= 0 + ballRadius) {
     ball_dy = ball_dy * -1;
     pickRandomColor();
