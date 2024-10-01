@@ -4,6 +4,9 @@
 //
 // Extra for Experts:
 // Lists for using random explored and used, no cursor on game canvas, text on game canvas.
+//
+//How to play:
+//"W" and "S" for Player 1 movement, UP_ARROW and DOWN_ARROW for Player 2 movement.
 
 // Ball
 let ball_x = 960;
@@ -161,7 +164,7 @@ function bounceBall() {
 
   // Bounce if needed
   if (ball_y >= height - ballRadius || ball_y <= 0 + ballRadius) {
-    ball_dy = ball_dy * -1  * speedIncrease;
+    ball_dy = ball_dy * -1;
     pickRandomColor();
   }
 }
