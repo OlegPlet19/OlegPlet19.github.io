@@ -103,7 +103,7 @@ function bounceBall() {
     if (ball_x < playerOneX){
       console.log("Game end");
 
-      text("Player 2 Won! Update the page to play again.", windowWidth/2, windowHeight/2);
+      text("Player 2 Won! Update the page to play again.", windowWidth/2 - 150, windowHeight/2);
 
       pause();
     }
@@ -131,7 +131,7 @@ function bounceBall() {
     if (ball_x > playerTwoX + playerWidth){
       console.log("Game end");
 
-      text("Player 1 Won! Update the page to play again.", windowWidth/2, windowHeight/2);
+      text("Player 1 Won! Update the page to play again.", windowWidth/2 - 150, windowHeight/2);
 
       pause();
     }
