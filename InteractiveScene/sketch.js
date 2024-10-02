@@ -3,10 +3,11 @@
 // 30.09.2024
 //
 // Extra for Experts:
-// Lists for using random explored and used, no cursor on game canvas, text on game canvas.
+// Lists for using random explored and used, no cursor on game canvas, text on game canvas, using mousewheel to change background color
 //
 //How to play:
-//"W" and "S" for Player 1 movement, UP_ARROW and DOWN_ARROW for Player 2 movement.
+//"W" and "S" for Player 1 movement, UP_ARROW and DOWN_ARROW for Player 2 movement, buy pressing buttons "1", "2", "3" you can chooose ball's speed
+// scroll mousewheel to change background color
 
 // Ball
 let ball_x = 960;
@@ -19,6 +20,8 @@ let ballRadius = 30;
 let r = 0;
 let g = 255;
 let b = 255;
+
+let  ballSpeed = 1;
 
 // player 1
 let playerOneX = 50;
@@ -43,29 +46,41 @@ let speedIncrease = 1;
 let ballXDirection = [-5, -4, -3, 3, 4, 5];
 let ballYDirection = [-2, -1, 1, 2];
 
-function setup() {
+// Background
+let rColor = 255;
+let gColor = 255;
+let bColor = 255;
+
+function setup(){
   createCanvas(windowWidth, windowHeight);
 
   ball_x = windowWidth/2;
   ball_y = windowHeight/2;
+
+  playerWidth = windowWidth/35;
+  playerHeight = windowHeight/4;
+
+  ballRadius = (windowHeight + windowWidth)/60;
 
   ball_dx = random(ballXDirection);
   ball_dy = random(ballYDirection);
   noCursor();
 }
 
-function draw() {
+function draw(){
 
-  background(220);
+  background(rColor, gColor, bColor);
 
-  text("Player 1 score: " + playerOneScore, 100, 50);
-  text("Player 2 score: " + playerTwoScore, windowWidth - 150, 50);
+  text("Player 1 score: " + playerOneScore, 150, 50);
+  text("Player 2 score: " + playerTwoScore, windowWidth - 250, 50);
+  text("Ball's speed: " + ballSpeed, windowWidth / 2 - 50, 50);
   
   moveBall();
   bounceBall();
   displayBall();
   displayPlayer1();
   displayPlayer2();
+  setBallSpeed();
 
   // Moves Player 1 up or down
   if (keyIsDown(87) && playerOneY > 0){
@@ -85,12 +100,13 @@ function draw() {
 }
 
 // Function that moves ball
-function moveBall() {
-  ball_x += ball_dx;
-  ball_y += ball_dy;
+function moveBall(){
+  ball_x += ball_dx * ballSpeed;
+  ball_y += ball_dy * ballSpeed;
 }
 
-function bounceBall() {
+// Function that makes ball bounce from platforms and ends game if one of players loses
+function bounceBall(){
   if (ball_dx > 0){
     bounceSideRight = true;
   } else {
@@ -170,14 +186,14 @@ function bounceBall() {
 }
 
 // Function that picks random color for ball
-function pickRandomColor() {
+function pickRandomColor(){
   r = random(255);
   g = random(255);
   b = random(255);
 }
 
 // Show Ball
-function displayBall() {
+function displayBall(){
   //display
   fill(r, g, b);
   circle(ball_x, ball_y, ballRadius * 2);
@@ -194,4 +210,24 @@ function displayPlayer2(){
   fill("black");
   rect(playerTwoX, playerTwoY, playerWidth, playerHeight);
   playerTwoX = windowWidth - playerOneX - playerWidth;
+}
+
+// Changes backgroung by pressing mouse wheel
+function mouseWheel(){
+  rColor = random(0, 255);
+  gColorColor = random(0, 255);
+  bColor = random(0, 255);
+}
+
+// Function that increases ball's speed
+function setBallSpeed(){
+  if (keyCode === 49){
+    ballSpeed = 1;
+  }
+  if (keyCode === 50){
+    ballSpeed = 2;
+  }
+  if (keyCode === 51){
+    ballSpeed = 3;
+  }
 }
