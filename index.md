@@ -6,6 +6,7 @@
 - [Square-Mooving](SquareMoving)
 - [Traffic-Light](TrafficLight)
 - [Bouncing-Balls](BouncingBalls)
+- [Generative-Art](GenerativeArt)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
