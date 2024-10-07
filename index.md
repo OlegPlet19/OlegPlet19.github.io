@@ -7,6 +7,7 @@
 - [Traffic-Light](TrafficLight)
 - [Bouncing-Balls](BouncingBalls)
 - [Generative-Art](GenerativeArt)
+- [Perlin-Noise-Ball](Perlin)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
