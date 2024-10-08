@@ -1,5 +1,5 @@
 // Bouncing-Balls
-// Oleh
+// Oleh Pletmintsev
 // 03/10/2024
 //
 // Extra for Experts:
