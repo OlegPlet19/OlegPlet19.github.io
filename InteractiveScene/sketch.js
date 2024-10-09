@@ -121,7 +121,7 @@ function bounceBall(){
 
       text("Player 2 Won! Update the page to play again.", windowWidth/2 - 150, windowHeight/2);
 
-      pause();
+      //pause();
     }
 
     // Checking X-coordinate of ball to collide with moving brick
@@ -149,7 +149,7 @@ function bounceBall(){
 
       text("Player 1 Won! Update the page to play again.", windowWidth/2 - 150, windowHeight/2);
 
-      pause();
+      //pause();
     }
     
     // Checking X-coordinate of ball to collide with moving brick
@@ -215,7 +215,7 @@ function displayPlayer2(){
 // Changes backgroung by pressing mouse wheel
 function mouseWheel(){
   rColor = random(0, 255);
-  gColorColor = random(0, 255);
+  gColor = random(0, 255);
   bColor = random(0, 255);
 }
 
