@@ -9,6 +9,7 @@
 - [Generative-Art](GenerativeArt)
 - [Perlin-Noise-Ball](Perlin)
 - [Terrain-Generation](TerrainGeneration)
+- [Bubble-Demo](BubbleDemo)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
