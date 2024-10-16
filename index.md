@@ -10,6 +10,7 @@
 - [Perlin-Noise-Ball](Perlin)
 - [Terrain-Generation](TerrainGeneration)
 - [Bubble-Demo](BubbleDemo)
+- [Music-Sound-Effects-Demo](MusicSoundEffects)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)

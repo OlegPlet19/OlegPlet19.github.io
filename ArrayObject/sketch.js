@@ -15,8 +15,9 @@ function setup() {
 function draw() {
   background(220);
 
+  isOnGround();
+  applyGravity();
   playerMovement();
-  gravity();
 
   // Rect that represents Player
   rect(player.playerX, player.playerY, player.playerWidth, player.playerHeight);
@@ -31,9 +32,12 @@ function spawnPlayer() {
     playerX : 50,
     playerY : 250,
     playerSpeed : 10,
-    playerMass : 10,
-    playerJumpHeight : 100,
-    isOnGround : false,
+    playerJumpHeight : -15,
+    playerJumpSpeed: 15,
+    isJumping: true,
+    OnGround : false,
+    gravity : 0.8,
+    velocityY : 0,
   } ;
 
   return player;
@@ -41,24 +45,34 @@ function spawnPlayer() {
 
 function playerMovement() {
   // Function that moves Player
-  if ((keyIsDown(68)) && player.playerX < width - player.playerWidth /*=== true*/) {
+  if (keyIsDown(68) && player.playerX < width - player.playerWidth) {
     player.playerX += player.playerSpeed;
   }
 
-  if ((keyIsDown(65)) /*&& player.playerX > width - player.playerWidth /*=== true*/) {
+  if (keyIsDown(65) && player.playerX > 0) {
     player.playerX -= player.playerSpeed;
   }
 
-  if ((keyIsDown(32)) && isOnGround === true) {
-    player.playerY -= player.playerJumpHeight;
+  if (keyIsDown(32) && player.OnGround === true && player.isJumping === false) {
+    player.velocityY = player.playerJumpHeight;
+    player.isJumping = true;
   }
 }
 
-function gravity() {
-  if (player.playerY < height - 100 - player.playerHeight) {
-    isOnGround = false;
-    player.playerY += 5;
-  } else {
-    isOnGround = true;
+function applyGravity() {
+  player.playerY += player.velocityY;
+  player.velocityY += player.gravity;
+  
+  if (player.playerY + player.playerHeight > height) {
+    player.playerY = height - player.playerHeight;
+    player.velocityY = 0;
   }
+}
+
+function isOnGround() {
+  player.OnGround = player.playerY + player.playerHeight >= height;
+  if (player.OnGround) {
+    player.isJumping = false;
+  }
+  console.log("on ground" + player.OnGround);
 }
