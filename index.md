@@ -3,14 +3,15 @@
 # Comp sci
 
 ## Demos
-- [Square-Mooving](SquareMoving)
-- [Traffic-Light](TrafficLight)
-- [Bouncing-Balls](BouncingBalls)
-- [Generative-Art](GenerativeArt)
-- [Perlin-Noise-Ball](Perlin)
-- [Terrain-Generation](TerrainGeneration)
+- [Square-Mooving-Demo](SquareMoving)
+- [Traffic-Light-Demo](TrafficLight)
+- [Bouncing-Balls-Demo](BouncingBalls)
+- [Generative-Art-Demo](GenerativeArt)
+- [Perlin-Noise-Ball-Demo](Perlin)
+- [Terrain-Generation-Demo](TerrainGeneration)
 - [Bubble-Demo](BubbleDemo)
 - [Music-Sound-Effects-Demo](MusicSoundEffects)
+- [Translate-Rotate-Demo](TranslateRotate)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
