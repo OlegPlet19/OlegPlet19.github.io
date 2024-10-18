@@ -6,11 +6,14 @@
 // - describe what you did to take this project "above and beyond"
 
 let player;
+let wall;
 let groundHeight = 100;
+let amountOfWalls = 3;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   spawnPlayer();
+  spawnWalls();
 }
 
 function draw() {
@@ -22,6 +25,9 @@ function draw() {
 
   // Rect that represents Player
   rect(player.x, player.y, player.width, player.height);
+  //rect that represents Wall
+  rect(wall.x, wall.y, wall.width, wall.height);
+  // Line that represents Ground Line
   line(0, height - groundHeight, width, height - groundHeight);
 }
 
@@ -46,11 +52,14 @@ function spawnPlayer() {
 
 function playerMovement() {
   // Function that moves Player
-  if (keyIsDown(68) && player.x < width - player.width) { // Move player to the right
+  if (// Move player to the right
+    keyIsDown(68) && 
+    player.x < width - player.width &&
+    player.x + player.width < wall.x) { 
     player.x += player.speed;
   }
 
-  if (keyIsDown(65) && player.x > 0) { // Move player to the left
+  if (keyIsDown(65) && player.x > 0 ) { // Move player to the left
     player.x -= player.speed;
   }
 
@@ -71,7 +80,8 @@ function applyGravity() {
   }
 }
 
-function isOnGround() { // Check is Player on ground
+function isOnGround() { 
+  // Check is Player on ground
   player.onGround = player.y + player.height + groundHeight >= height;
   if (player.onGround) {
     player.isJumping = false;
@@ -80,11 +90,12 @@ function isOnGround() { // Check is Player on ground
 }
 
 function spawnWalls() {
+  // Wall's values 
   wall = {
-    height : player.height,
-    width : player.width / 3,
+    height : player.height*2,
+    width : player.width*2,
     x : 200,
-    y : height - player.height - groundHeight,
+    y : height - player.height*2 - groundHeight,
   } ;
 
   return wall;
