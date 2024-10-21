@@ -108,10 +108,11 @@ function playerMovement() {
   }
 
   // Jumping is possible if the player is on the ground or on a wall
-  if ((player.onGround || player.onWall) && keyIsDown(32) && !player.isJumping) {
+  if (/*(player.onGround || player.onWall) &&*/ keyIsDown(32) && !player.isJumping) {
     player.velocity = player.jumpHeight;
     player.isJumping = true;
     player.onWall = false; 
+    console.log("Player Jumped: " + player.isJumping);
   }
 }
 
@@ -122,6 +123,7 @@ function applyGravity() {
   if (player.y + player.height + groundHeight > height) {
     player.y = height - player.height - groundHeight;
     player.velocity = 0;
+    console.log("On ground: " + player.onGround);
   }
 }
 
