@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 let player;
+let wall;
 let walls = [];
 let groundHeight = 100;
 let amountOfWalls = 5;
@@ -72,7 +73,8 @@ function playerMovement() {
   if (keyIsDown(68) && player.x < width - player.width) {
     if (player.onWall) {
       player.x += player.speed;
-    } else {
+    } 
+    else {
       let canMoveRight = true;
       for (let theWall of walls) {
         if (checkCollisionRight(theWall)) {
@@ -80,7 +82,9 @@ function playerMovement() {
           break;
         }
       }
-      if (canMoveRight) player.x += player.speed;
+      if (canMoveRight){
+        player.x += player.speed;
+      } 
     }
   }
 
@@ -88,7 +92,8 @@ function playerMovement() {
   if (keyIsDown(65) && player.x > 0) {
     if (player.onWall) {
       player.x -= player.speed; 
-    } else {
+    } 
+    else {
       let canMoveLeft = true;
       for (let theWall of walls) {
         if (checkCollisionLeft(theWall)) {
@@ -96,7 +101,9 @@ function playerMovement() {
           break;
         }
       }
-      if (canMoveLeft) player.x -= player.speed;
+      if (canMoveLeft) {
+        player.x -= player.speed;
+      }
     }
   }
 
@@ -140,7 +147,7 @@ function isOnGroundOrWall() {
     }
   }
 
-  if (player.onGround) {
+  if (player.onGround || player.onWall) {
     player.isJumping = false;
   }
 }
@@ -149,7 +156,7 @@ function spawnWalls() {
   let wallHeight = random(50, 150); // Height of the wall
   let wallWidth = random(50, 150);   // Width of  the wall
   let wallX = random(100, width - wallWidth - 100); // X pos of the wall
-  let wallY = height - groundHeight - wallHeight; // X pos of the wall + above ground
+  let wallY = random(0 + wallHeight, height - groundHeight - wallHeight); // Y pos of the wall + above ground
 
   return {
     height: wallHeight,
@@ -201,15 +208,17 @@ function checkCollision() {
 
     // Checking for above colision with wall
     if (
-      player.x + player.width > theWall.x &&
-      player.x < theWall.x + theWall.width &&
-      player.y + player.height > theWall.y &&
-      player.y < theWall.y + theWall.height
+      player.x + player.width > theWall.x && // player's X pos + width is bigger than wall's X pos
+      player.x < theWall.x + theWall.width && // player's X pos is less than wall's X pos + width of wall
+      player.y + player.height > theWall.y && // player's Y pos + player's height is bigger than wall's Y pos
+      player.y < theWall.y + theWall.height // player's Y pos is less than wall's Y pos + wall's heght
     ) {
       player.y = theWall.y - player.height;
       player.velocity = 0;
       player.isJumping = false;
       player.onGround = true;
+      console.log("Player is jumping :" + player.isJumping);
+      console.log("Player on ground :" + player.onGround);
     }
   }
 }
