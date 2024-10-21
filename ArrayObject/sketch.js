@@ -6,28 +6,45 @@
 // - describe what you did to take this project "above and beyond"
 
 let player;
-let wall;
+let walls = [];
 let groundHeight = 100;
-let amountOfWalls = 3;
+let amountOfWalls = 5;
+let minDistanceBetweenWalls = 200;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   spawnPlayer();
-  spawnWalls();
+
+  // Creating some amount of walls with checkiong on minimum distance
+  for (let i = 0; i < amountOfWalls; i++) {
+    let newWall = spawnWalls();
+
+    // Checking too close distance betwwen walls
+    while (!isValidWallPosition(newWall)) {
+      newWall = spawnWalls(); // If too close creating again
+    }
+
+    walls.push(newWall);
+  }
 }
 
 function draw() {
   background(220);
 
-  isOnGround();
+  isOnGroundOrWall(); 
   applyGravity();
   playerMovement();
+  checkCollision();
 
-  // Rect that represents Player
+  // Draw all wals
+  for (let theWall of walls) {
+    rect(theWall.x, theWall.y, theWall.width, theWall.height);
+  }
+
+  // Draw Player
   rect(player.x, player.y, player.width, player.height);
-  //rect that represents Wall
-  rect(wall.x, wall.y, wall.width, wall.height);
-  // Line that represents Ground Line
+
+  // Draw Line
   line(0, height - groundHeight, width, height - groundHeight);
 }
 
@@ -38,65 +55,161 @@ function spawnPlayer() {
     height : 50,
     x : 50,
     y : 250,
-    speed : 10,
+    speed : 5, 
     jumpHeight : -15,
-    jumpSpeed: 15,
-    isJumping: true,
+    isJumping : false,
     onGround : false,
     gravity : 0.8,
-    velocityy : 0,
-  } ;
+    velocity : 0,
+    onWall : false, 
+  };
 
   return player;
 }
 
 function playerMovement() {
-  // Function that moves Player
-  if (// Move player to the right
-    keyIsDown(68) && 
-    player.x < width - player.width &&
-    player.x + player.width < wall.x) { 
-    player.x += player.speed;
+  //Move right
+  if (keyIsDown(68) && player.x < width - player.width) {
+    if (player.onWall) {
+      player.x += player.speed;
+    } else {
+      let canMoveRight = true;
+      for (let theWall of walls) {
+        if (checkCollisionRight(theWall)) {
+          canMoveRight = false;
+          break;
+        }
+      }
+      if (canMoveRight) player.x += player.speed;
+    }
   }
 
-  if (keyIsDown(65) && player.x > 0 ) { // Move player to the left
-    player.x -= player.speed;
+  //Move left
+  if (keyIsDown(65) && player.x > 0) {
+    if (player.onWall) {
+      player.x -= player.speed; 
+    } else {
+      let canMoveLeft = true;
+      for (let theWall of walls) {
+        if (checkCollisionLeft(theWall)) {
+          canMoveLeft = false;
+          break;
+        }
+      }
+      if (canMoveLeft) player.x -= player.speed;
+    }
   }
 
-  if (keyIsDown(32) && player.onGround === true && player.isJumping === false) { // Jumping
-    player.velocityy = player.jumpHeight;
+  // Jumping is possible if the player is on the ground or on a wall
+  if ((player.onGround || player.onWall) && keyIsDown(32) && !player.isJumping) {
+    player.velocity = player.jumpHeight;
     player.isJumping = true;
+    player.onWall = false; 
   }
 }
 
 function applyGravity() {
-  // Move player downwards
-  player.y += player.velocityy;
-  player.velocityy += player.gravity;
-  
-  if (player.y + player.height + groundHeight> height) {
+  player.y += player.velocity;
+  player.velocity += player.gravity;
+
+  if (player.y + player.height + groundHeight > height) {
     player.y = height - player.height - groundHeight;
-    player.velocityy = 0;
+    player.velocity = 0;
   }
 }
 
-function isOnGround() { 
-  // Check is Player on ground
+function isOnGroundOrWall() {
+  // Check if the player is standing on the ground or on a wall
   player.onGround = player.y + player.height + groundHeight >= height;
+  player.onWall = false; 
+
+  for (let i = 0; i < walls.length; i++) {
+    let theWall = walls[i];
+
+    // Check for collision with the top of the wall
+    if (
+      player.x + player.width > theWall.x &&
+      player.x < theWall.x + theWall.width &&
+      player.y + player.height > theWall.y &&
+      player.y < theWall.y + theWall.height
+    ) {
+      player.y = theWall.y - player.height; 
+      player.velocity = 0;
+      player.isJumping = false;
+      player.onWall = true; 
+    }
+  }
+
   if (player.onGround) {
     player.isJumping = false;
   }
-  console.log("on ground" + player.onGround);
 }
 
 function spawnWalls() {
-  // Wall's values 
-  wall = {
-    height : player.height*2,
-    width : player.width*2,
-    x : 200,
-    y : height - player.height*2 - groundHeight,
-  } ;
+  let wallHeight = random(50, 150); // Height of the wall
+  let wallWidth = random(50, 150);   // Width of  the wall
+  let wallX = random(100, width - wallWidth - 100); // X pos of the wall
+  let wallY = height - groundHeight - wallHeight; // X pos of the wall + above ground
 
-  return wall;
+  return {
+    height: wallHeight,
+    width: wallWidth,
+    x: wallX,
+    y: wallY
+  };
+}
+
+// Function to check for collision with the right side of the wall
+function checkCollisionRight(theWall) {
+  return (
+    player.x + player.width > theWall.x &&
+    player.x < theWall.x + theWall.width &&
+    player.y + player.height > theWall.y &&
+    player.y < theWall.y + theWall.height
+  );
+}
+
+// Function to check for collision with the left side of the wall
+function checkCollisionLeft(theWall) {
+  return (
+    player.x < theWall.x + theWall.width &&
+    player.x + player.width > theWall.x &&
+    player.y + player.height > theWall.y &&
+    player.y < theWall.y + theWall.height
+  );
+}
+
+// Checking that the distance between the walls is not less than the specified value
+function isValidWallPosition(newWall) {
+  for (let existingWall of walls) {
+    let distX = abs(newWall.x - existingWall.x);
+    let distY = abs(newWall.y - existingWall.y);
+
+    // Check that wall is at a minimum distance.
+    if (distX < minDistanceBetweenWalls && distY < minDistanceBetweenWalls) {
+      return false; 
+    }
+  }
+  return true; 
+}
+
+function checkCollision() {
+  player.onGround = false; // Imagine player on ground
+
+  for (let i = 0; i < walls.length; i++) {
+    let theWall = walls[i];
+
+    // Checking for above colision with wall
+    if (
+      player.x + player.width > theWall.x &&
+      player.x < theWall.x + theWall.width &&
+      player.y + player.height > theWall.y &&
+      player.y < theWall.y + theWall.height
+    ) {
+      player.y = theWall.y - player.height;
+      player.velocity = 0;
+      player.isJumping = false;
+      player.onGround = true;
+    }
+  }
 }
