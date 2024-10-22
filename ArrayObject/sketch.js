@@ -12,7 +12,6 @@
 // Came up with physics for the player (eg Gravity) 
 
 let player;
-let layerHit = false;
 
 let wall;
 let walls = [];
@@ -61,7 +60,6 @@ function draw() {
   applyGravity();
   playerMovement();
   checkCollision();
-  checkCollisionWithLaser();
 }
 
 // Draw Player
@@ -69,7 +67,9 @@ function displayPlayer() {
   // Player color stands green when able to jump and red when not
   if (player.isJumping) {
     fill("red");
-  } else {
+  } 
+  
+  else {
     fill("green");
   }
   
@@ -95,16 +95,15 @@ function displayLine() {
 function displayLaser() {
   currentTimeBetweenLasers -= 0.01;
 
-// Check if time has passed between laser movements
-if (currentTimeBetweenLasers <= 0) {
-// Check if the player is inside the current laser before moving it
-  if (
-      (laser.x1 === laser.x2 && // If laser is vertical
+  // Check if time has passed between laser movements
+  if (currentTimeBetweenLasers <= 0) {
+  // Check if the player is inside the current laser before moving it
+    if ((laser.x1 === laser.x2 && // If laser is vertical
         player.x + player.width >= laser.x1 &&
         player.x <= laser.x1 &&
         player.y + player.height >= laser.y1 &&
         player.y <= laser.y2) ||
-      (laser.y1 === laser.y2 && // If laser is horizontal
+        (laser.y1 === laser.y2 && // If laser is horizontal
         player.y + player.height >= laser.y1 &&
         player.y <= laser.y1 &&
         player.x + player.width >= laser.x1 &&
@@ -114,7 +113,9 @@ if (currentTimeBetweenLasers <= 0) {
       console.log("GAME OVER!!!!");
       endGameFx.play();
       noLoop(); // Stop the game
-    } else {
+    } 
+    
+    else {
       // Move the laser to a new position
       laser = spawnLaser();
     }
@@ -336,32 +337,6 @@ function checkCollision() {
       player.velocity = 0;
       player.isJumping = false;
       player.onGround = true;
-    }
-  }
-}
-
-function checkCollisionWithLaser() {
-  // Vertical laser collision check
-  if (laser.x1 === laser.x2) { // Vertical laser
-    if (
-      player.x + player.width >= laser.x1 &&  // Player's right side crosses x1 laser
-      player.x <= laser.x1 &&                 // Player's left side crosses x1 laser
-      player.y + player.height >= laser.y1 && // Player's bottom is below the laser's top border
-      player.y <= laser.y2                    // The top of the player is above the bottom of the laser
-    ) {
-      playerHit = true; // Player was hit by the laser
-    }
-  }
-
-  // Check for collision with horizontal laser
-  if (laser.y1 === laser.y2) { // Horizontal laser
-    if (
-      player.y + player.height >= laser.y1 &&  // Player's bottom intersects y1 laser
-      player.y <= laser.y1 &&                  // The player's top crosses the y1 laser
-      player.x + player.width >= laser.x1 &&   // The player's right side is behind the start of the laser
-      player.x <= laser.x2                     // Player's left side before the end of the laser
-    ) {
-      playerHit = true; // Player was hit by a laser
     }
   }
 }
