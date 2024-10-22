@@ -8,6 +8,9 @@
 let player;
 let wall;
 let walls = [];
+let laser;
+let timeBetweenLasers = 2;
+let currentTimeBetweenLasers = 2;
 let groundHeight = 100;
 let amountOfWalls = 5;
 let minDistanceBetweenWalls = 200;
@@ -32,21 +35,49 @@ function setup() {
 function draw() {
   background(220);
 
+  displayPlayer();
+  displayWalls();
+  displayLine();
+  displayLaser();
+
   isOnGroundOrWall(); 
   applyGravity();
   playerMovement();
   checkCollision();
+}
 
-  // Draw all wals
+// Draw Player
+function displayPlayer() {
+  // Player color stands green when able to jump and red when not
+  if (player.isJumping){
+    fill("red");
+  } else  {
+    fill("green");
+  }
+  
+  rect(player.x, player.y, player.width, player.height);
+}
+
+// Draw all wals
+function displayWalls() {
+  fill("black");
   for (let theWall of walls) {
     rect(theWall.x, theWall.y, theWall.width, theWall.height);
   }
+}
 
-  // Draw Player
-  rect(player.x, player.y, player.width, player.height);
-
-  // Draw Line
+// Draw Line
+function displayLine() {
   line(0, height - groundHeight, width, height - groundHeight);
+}
+
+function displayLaser() {
+  currentTimeBetweenLasers -= 0.01;
+  if (currentTimeBetweenLasers <= 0) {
+    let theLaser = spawnLaser();
+    line(theLaser.x1, theLaser.x2, theLaser.y1, theLaser.y2);
+    console.log("creating laser");
+  }
 }
 
 function spawnPlayer() {
@@ -58,7 +89,7 @@ function spawnPlayer() {
     y : 250,
     speed : 5, 
     jumpHeight : -15,
-    isJumping : false,
+    isJumping : true,
     onGround : false,
     gravity : 0.8,
     velocity : 0,
@@ -66,6 +97,49 @@ function spawnPlayer() {
   };
 
   return player;
+}
+
+function spawnWalls() {
+  let wallHeight = random(75, 150); // Height of the wall
+  let wallWidth = random(75, 150);   // Width of  the wall
+  let wallX = random(100, width - wallWidth - 100); // X pos of the wall
+  let wallY = random(0 + wallHeight, height - groundHeight - wallHeight); // Y pos of the wall + above ground
+
+  return {
+    height: wallHeight,
+    width: wallWidth,
+    x: wallX,
+    y: wallY
+  };
+}
+
+function spawnLaser() {
+  let minDistanceOfLaser = 50;
+  theLaser = {
+    vertical : { 
+      y1 : 0,
+      y2 : height,
+      x1 : random(minDistanceOfLaser, width - minDistanceOfLaser),
+      x2 : x1,
+    },
+
+    horizontal : {
+      x1 : 0,
+      x2 : width,
+      y1 : random(minDistanceOfLaser, height - minDistanceOfLaser),
+      y2 : y1,
+    },
+  };
+
+  let laserChance = random(100);
+
+  // if (laserChance < 50) {
+  //   return theLaser.vertical;
+  // } else {
+  //   return theLaser.horizontal;
+  // }
+
+  return laserChance < 50? theLaser.vertical : theLaser.horizontal;
 }
 
 function playerMovement() {
@@ -149,23 +223,9 @@ function isOnGroundOrWall() {
     }
   }
 
-  if (player.onGround || player.onWall) {
+  if (player.onGround/* || player.onWall*/) {
     player.isJumping = false;
   }
-}
-
-function spawnWalls() {
-  let wallHeight = random(50, 150); // Height of the wall
-  let wallWidth = random(50, 150);   // Width of  the wall
-  let wallX = random(100, width - wallWidth - 100); // X pos of the wall
-  let wallY = random(0 + wallHeight, height - groundHeight - wallHeight); // Y pos of the wall + above ground
-
-  return {
-    height: wallHeight,
-    width: wallWidth,
-    x: wallX,
-    y: wallY
-  };
 }
 
 // Function to check for collision with the right side of the wall
