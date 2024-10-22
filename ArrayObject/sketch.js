@@ -2,9 +2,14 @@
 // Oleh Pletmintsev
 // 08/10/2024
 //
+// How to play:
+// use AD to move right or left, space to jump, try to avoid getting tagged by laser. 
+//
 // Extra for Experts:
 // learned a the ternary operator in JavaScript: return laserChance < 50 ? theLaser.vertical : theLaser.horizontal;
-// Sound effects
+// Using sound effects when player jumps, and when player dies
+// Nested object notation
+// Came up with physics for the player (eg Gravity) 
 
 let player;
 let layerHit = false;
