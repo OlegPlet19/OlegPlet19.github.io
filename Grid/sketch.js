@@ -28,10 +28,51 @@ function setup() {
   grid = generateRandomGrid(GRID_SIZE, GRID_SIZE);
 }
 
+function windowResized() {
+  if (windowWidth > windowHeight) {
+    resizeCanvas(windowWidth, windowHeight);
+  } 
+  else {
+    resizeCanvas(windowWidth, windowHeight);
+  }
+
+  cellSize = width/GRID_SIZE;
+}
+
 function draw() {
   background(220);
 
   displayGrid();
+}
+
+function mousePressed() {
+  let x = Math.floor(mouseX/cellSize);
+  let y = Math.floor(mouseY/cellSize);
+
+  // Center
+  toggleCell(x, y);
+
+  // Neighbours
+  toggleCell(x + 1, y);
+  toggleCell(x - 1, y);
+  toggleCell(x, y + 1);
+  toggleCell(x, y - 1);
+}
+
+function toggleCell(x, y) {
+  // Make sure the cell you toggeling is in the grid
+  if (x >= 0 && 
+     x < GRID_SIZE && 
+     y >= 0 && 
+     y < GRID_SIZE
+  ) {
+    if (grid[y][x] === 0) {
+      grid[y][x] = 1;
+    } 
+    else {
+      grid[y][x] = 0;
+    }
+  }
 }
 
 function keyPressed() {

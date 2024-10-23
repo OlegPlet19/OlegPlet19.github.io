@@ -12,6 +12,7 @@
 - [Bubble-Demo](BubbleDemo)
 - [Music-Sound-Effects-Demo](MusicSoundEffects)
 - [Translate-Rotate-Demo](TranslateRotate)
+- [Grid-Demo](Grid)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
