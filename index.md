@@ -13,6 +13,7 @@
 - [Music-Sound-Effects-Demo](MusicSoundEffects)
 - [Translate-Rotate-Demo](TranslateRotate)
 - [Grid-Demo](Grid)
+- [Game-Of-Life-Demo](GameOfLife)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
