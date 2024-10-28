@@ -14,7 +14,9 @@
 - [Translate-Rotate-Demo](TranslateRotate)
 - [Grid-Demo](Grid)
 - [Game-Of-Life-Demo](GameOfLife)
+- [Rectangle-Grid-Demo](RectangleGrid)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
 - [Arrays-And-Object-Notation](ArrayObject)
+- [Tic-Tac-Toe](TicTacToe)
