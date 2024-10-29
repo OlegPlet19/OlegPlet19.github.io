@@ -143,7 +143,6 @@ function updateGrid() {
   return nextTurn;
 }
 
-
 function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) {
     for (let x = 0; x < GRID_SIZE; x++) {
@@ -157,7 +156,6 @@ function displayGrid() {
     }
   }
 }
-
 
 function generateRandomGrid(cols, rows) {
   let newGrid = [];
