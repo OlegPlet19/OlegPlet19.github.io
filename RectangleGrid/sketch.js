@@ -11,18 +11,19 @@ let cols;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  cols = Math.floor(windowWidth/CELL_SIZE);
-  rows = Math.floor(windowHeight/CELL_SIZE);
+  cols = Math.floor(width/CELL_SIZE);
+  rows = Math.floor(height/CELL_SIZE);
   grid = generateRandomGrid(cols, rows);
 }
 
 function draw() {
   background(220);
+  displayGrid();
 }
 
 function displayGrid() {
-  for (let y = 0; y < GRID_SIZE; y++) {
-    for (let x = 0; x < GRID_SIZE; x++) {
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
       if (grid[y][x] === 1) {
         fill("black");
       }
@@ -39,12 +40,12 @@ function generateRandomGrid(cols, rows) {
   for (let y = 0; y < rows; y++) {
     newGrid.push([]);
     for (let x = 0; x < cols; x++) {
-      //make it a 1 half the time, a 0 half the time
+      //toss in a 0 or 1 randomly
       if (random(100) < 50) {
-        newGrid[y].push(1);
+        newGrid[y].push(0);
       }
       else {
-        newGrid[y].push(0);
+        newGrid[y].push(1);
       }
     }
   }
