@@ -20,6 +20,17 @@ function setup() {
   cellSize = height/GRID_SIZE;
 }
 
+// Creating changeble screen
+function windowResized() {
+  if (windowWidth < windowHeight) {
+    resizeCanvas(windowWidth, windowWidth);
+  }
+  else {
+    resizeCanvas(windowHeight, windowHeight);
+  }
+  cellSize = height/GRID_SIZE;
+}
+
 function draw() {
   background(220);
   displayGrid();
