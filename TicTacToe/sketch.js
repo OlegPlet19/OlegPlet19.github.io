@@ -9,6 +9,13 @@ let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let cellSize;
 const GRID_SIZE = 3;
 let playerTurn = true;
+let circle;
+let XImage;
+
+function preload() {
+  circle = loadImage("Circle.png");
+  xImage = loadImage("XImage.png");
+}
 
 function setup() {
   if (windowWidth < windowHeight) {
@@ -76,7 +83,7 @@ function displayGrid() {
         fill("grey");
       }
       square(x * cellSize, y * cellSize, cellSize);
-    }
+    } 
   }
 }
  
@@ -134,9 +141,24 @@ function checkForWinner() {
 }
 
 function aiMove() {
-  let emptyCells = [];
+  // Check if AI can win with the next move
+  let move = findWinningMove(2);  // AI (Player O) is represented by 2
+  if (move) {
+    toggleCell(move.x, move.y);
+    playerTurn = true;
+    return;
+  }
 
-  // Find all empty cells
+  // Check if AI needs to block the player from winning
+  move = findWinningMove(1);  // Player X is represented by 1
+  if (move) {
+    toggleCell(move.x, move.y);
+    playerTurn = true;
+    return;
+  }
+
+  // If no winning or blocking move, pick a random empty cell
+  let emptyCells = [];
   for (let y = 0; y < 3; y++) {
     for (let x = 0; x < 3; x++) {
       if (grid[y][x] === 0) {
@@ -145,11 +167,30 @@ function aiMove() {
     }
   }
 
-  // Pick a random cell from the empty cells
   if (emptyCells.length > 0) {
-    let randomIndex = Math.floor(Math.random() * emptyCells.length);
-    let move = emptyCells[randomIndex];
-    toggleCell(move.x, move.y);
+    let randomIndex = Math.floor(random() * emptyCells.length);
+    let randomMove = emptyCells[randomIndex];
+    toggleCell(randomMove.x, randomMove.y);
     playerTurn = true;
   }
+}
+
+// Helper function to find a winning move for a given player
+function findWinningMove(player) {
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 3; x++) {
+      if (grid[y][x] === 0) {
+        // Temporarily place the player's move
+        grid[y][x] = player;
+        if (checkThreeInARow() === player) {
+          // Undo the move and return the winning move
+          grid[y][x] = 0;
+          return { x, y };
+        }
+        // Undo the move if it’s not winning
+        grid[y][x] = 0;
+      }
+    }
+  }
+  return null; // No winning move found
 }
