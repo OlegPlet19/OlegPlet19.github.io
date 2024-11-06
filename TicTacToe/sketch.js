@@ -5,7 +5,7 @@
 // neural net
 // Extra for Experts:
 
-let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0],];
+let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let cellSize;
 const GRID_SIZE = 3;
 let playerTurn = true;
@@ -38,26 +38,29 @@ function draw() {
 
 // Getting the x and y pos 
 function mousePressed() {
-  let x = Math.floor(mouseX/cellSize);
-  let y = Math.floor(mouseY/cellSize);
+  if (playerTurn) {
+    let x = Math.floor(mouseX/cellSize);
+    let y = Math.floor(mouseY/cellSize);
 
-  // Toggle cell and check for winner or tie after each move
-  toggleCell(x, y);
+    if (grid[y][x] === 0) {
+      toggleCell(x, y);
+      playerTurn = false;
+
+      if (!checkForWinner()) {
+        aiMove(); // Player O
+      }
+    }
+  }
 }
 
 function toggleCell(x, y) {
-  // Make sure the cell you're toggling is in the grid
-  if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) { // To not get off the screen
-    if (grid[y][x] === 0 && playerTurn) { // Player X
-      grid[y][x] = 1;
-      playerTurn = !playerTurn;
-    }
-    else if (grid[y][x] === 0 && !playerTurn) { // Player O
-      grid[y][x] = 2;
-      playerTurn = !playerTurn;
-    }
-    checkForWinner();
+  if (grid[y][x] === 0 && playerTurn) {
+    grid[y][x] = 1;
+  } 
+  else if (grid[y][x] === 0 && !playerTurn) {
+    grid[y][x] = 2;
   }
+  checkForWinner();
 }
 
 function displayGrid() {
@@ -70,13 +73,13 @@ function displayGrid() {
         fill("white");
       } 
       else if (grid[y][x] === 2) { // Player O
-        fill("green");
+        fill("grey");
       }
       square(x * cellSize, y * cellSize, cellSize);
     }
   }
 }
-
+ 
 function checkThreeInARow() {
   for (let i = 0; i < 3; i++) {
     // Check for X win conditions
@@ -112,16 +115,41 @@ function checkTie() {
 
 function checkForWinner() { 
   let winner = checkThreeInARow();
-  if (winner === 1) {
+  if (winner === 1) { // Player X
     console.log("Player X wins!");
     noLoop(); // Stop the draw loop to prevent further moves
-  }
-  else if (winner === 2) {
+    return true;
+  } 
+  else if (winner === 2) { // Player O
     console.log("Player O wins!");
     noLoop(); // Stop the draw loop to prevent further moves
-  }
-  else if (checkTie()) {
+    return true;
+  } 
+  else if (checkTie()) {  //No winner
     console.log("It's a tie!");
     noLoop(); // Stop the draw loop to prevent further moves
+    return true;
+  }
+  return false; // Game continues
+}
+
+function aiMove() {
+  let emptyCells = [];
+
+  // Find all empty cells
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 3; x++) {
+      if (grid[y][x] === 0) {
+        emptyCells.push({ x, y });
+      }
+    }
+  }
+
+  // Pick a random cell from the empty cells
+  if (emptyCells.length > 0) {
+    let randomIndex = Math.floor(Math.random() * emptyCells.length);
+    let move = emptyCells[randomIndex];
+    toggleCell(move.x, move.y);
+    playerTurn = true;
   }
 }
