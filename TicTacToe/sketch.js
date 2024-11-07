@@ -9,12 +9,12 @@ let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let cellSize;
 const GRID_SIZE = 3;
 let playerTurn = true;
-let circle;
-let XImage;
+let circleIMG;
+let xIMG;
 
 function preload() {
-  circle = loadImage("Circle.png");
-  xImage = loadImage("XImage.png");
+  circleIMG = loadImage("Circle.png");
+  xIMG = loadImage("XImage.png");
 }
 
 function setup() {
@@ -73,16 +73,19 @@ function toggleCell(x, y) {
 function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) { // Vertical
     for (let x = 0; x < GRID_SIZE; x++) { // Horizontal
+      square(x * cellSize, y * cellSize, cellSize);
       if (grid[y][x] === 1) { // Player X
-        fill("black");
+        //fill("black");
+        image(xIMG, x*cellSize, y*cellSize, cellSize, cellSize);
       }
       else if (grid[y][x] === 0) { // Empty spot
         fill("white");
       } 
       else if (grid[y][x] === 2) { // Player O
-        fill("grey");
+        //fill("grey");
+        image(circleIMG, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      square(x * cellSize, y * cellSize, cellSize);
+      
     } 
   }
 }
