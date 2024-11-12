@@ -24,7 +24,7 @@ function setup() {
   else {
     createCanvas(windowHeight, windowHeight);
   }
-  cellSize = height/GRID_SIZE;
+  cellSize = (height-200)/GRID_SIZE;
 }
 
 // Creating changeble screen
@@ -35,12 +35,13 @@ function windowResized() {
   else {
     resizeCanvas(windowHeight, windowHeight);
   }
-  cellSize = height/GRID_SIZE;
+  cellSize = (height-200)/GRID_SIZE;
 }
 
 function draw() {
   background(220);
   displayGrid();
+  displayText();
 }
 
 // Getting the x and y pos 
@@ -74,18 +75,20 @@ function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) { // Vertical
     for (let x = 0; x < GRID_SIZE; x++) { // Horizontal
       square(x * cellSize, y * cellSize, cellSize);
+      //square((x + 0.5) * cellSize, y * cellSize, cellSize);
       if (grid[y][x] === 1) { // Player X
         //fill("black");
-        image(xIMG, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(xIMG, x * cellSize, y * cellSize, cellSize, cellSize);
+        //image(xIMG, (x + 0.5) * cellSize, y * cellSize, cellSize, cellSize);
       }
       else if (grid[y][x] === 0) { // Empty spot
         fill("white");
       } 
       else if (grid[y][x] === 2) { // Player O
         //fill("grey");
-        image(circleIMG, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(circleIMG, x * cellSize, y * cellSize, cellSize, cellSize);
+        //image(circleIMG, (x + 0.5) * cellSize, y * cellSize, cellSize, cellSize);
       }
-      
     } 
   }
 }
@@ -98,7 +101,7 @@ function checkThreeInARow() {
         grid[0][0] === 1 && grid[1][1] === 1 && grid[2][2] === 1 || 
         grid[0][2] === 1 && grid[1][1] === 1 && grid[2][0] === 1
     ) { 
-      return 1;
+      return 1; // Player X
     }
     // Check for O win conditions
     else if (grid[0][i] === 2 && grid[1][i] === 2 && grid[2][i] === 2 || 
@@ -106,7 +109,7 @@ function checkThreeInARow() {
             grid[0][0] === 2 && grid[1][1] === 2 && grid[2][2] === 2 || 
             grid[0][2] === 2 && grid[1][1] === 2 && grid[2][0] === 2
     ) { 
-      return 2;
+      return 2; // Player O
     }
   }
   return 0; // No winner
@@ -127,20 +130,19 @@ function checkForWinner() {
   let winner = checkThreeInARow();
   if (winner === 1) { // Player X
     console.log("Player X wins!");
+    text("Player X wins!", 50, windowHeight - 100);
     noLoop(); // Stop the draw loop to prevent further moves
-    return true;
   } 
   else if (winner === 2) { // Player O
     console.log("Player O wins!");
+    text("Player O wins!", 50, windowHeight - 100);
     noLoop(); // Stop the draw loop to prevent further moves
-    return true;
   } 
   else if (checkTie()) {  //No winner
     console.log("It's a tie!");
+    text("It's a tie!", 50, windowHeight - 100);
     noLoop(); // Stop the draw loop to prevent further moves
-    return true;
   }
-  return false; // Game continues
 }
 
 function aiMove() {
@@ -196,4 +198,11 @@ function findWinningMove(player) {
     }
   }
   return null; // No winning move found
+}
+
+function displayText() {
+  textSize(32);
+  fill(255);
+  stroke(0);
+  strokeWeight(4); 
 }
