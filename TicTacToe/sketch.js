@@ -11,6 +11,8 @@ const GRID_SIZE = 3;
 let playerTurn = true;
 let circleIMG;
 let xIMG;
+let winner;
+let screenMoveDist = 100;
 
 function preload() {
   circleIMG = loadImage("Circle.png");
@@ -42,12 +44,13 @@ function draw() {
   background(220);
   displayGrid();
   displayText();
+  checkForWinner();
 }
 
 // Getting the x and y pos 
 function mousePressed() {
   if (playerTurn) {
-    let x = Math.floor(mouseX/cellSize);
+    let x = Math.floor((mouseX-screenMoveDist)/cellSize);
     let y = Math.floor(mouseY/cellSize);
 
     if (grid[y][x] === 0) {
@@ -59,6 +62,7 @@ function mousePressed() {
       }
     }
   }
+  checkForWinner();
 }
 
 function toggleCell(x, y) {
@@ -68,26 +72,21 @@ function toggleCell(x, y) {
   else if (grid[y][x] === 0 && !playerTurn) {
     grid[y][x] = 2;
   }
-  checkForWinner();
+  
 }
 
 function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) { // Vertical
     for (let x = 0; x < GRID_SIZE; x++) { // Horizontal
-      square(x * cellSize, y * cellSize, cellSize);
-      //square((x + 0.5) * cellSize, y * cellSize, cellSize);
+      square(x * cellSize + screenMoveDist, y * cellSize, cellSize);
       if (grid[y][x] === 1) { // Player X
-        //fill("black");
-        image(xIMG, x * cellSize, y * cellSize, cellSize, cellSize);
-        //image(xIMG, (x + 0.5) * cellSize, y * cellSize, cellSize, cellSize);
+        image(xIMG, x * cellSize + screenMoveDist, y * cellSize, cellSize, cellSize);
       }
       else if (grid[y][x] === 0) { // Empty spot
         fill("white");
       } 
       else if (grid[y][x] === 2) { // Player O
-        //fill("grey");
-        image(circleIMG, x * cellSize, y * cellSize, cellSize, cellSize);
-        //image(circleIMG, (x + 0.5) * cellSize, y * cellSize, cellSize, cellSize);
+        image(circleIMG, x * cellSize + screenMoveDist, y * cellSize, cellSize, cellSize);
       }
     } 
   }
@@ -127,7 +126,7 @@ function checkTie() {
 }
 
 function checkForWinner() { 
-  let winner = checkThreeInARow();
+  winner = checkThreeInARow();
   if (winner === 1) { // Player X
     console.log("Player X wins!");
     text("Player X wins!", 50, windowHeight - 100);
@@ -204,5 +203,5 @@ function displayText() {
   textSize(32);
   fill(255);
   stroke(0);
-  strokeWeight(4); 
+  strokeWeight(4);
 }
