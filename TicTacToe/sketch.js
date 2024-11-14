@@ -4,6 +4,7 @@
 //
 // neural net
 // Extra for Experts:
+// location.reload();
 
 let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let cellSize;
@@ -13,6 +14,9 @@ let circleIMG;
 let xIMG;
 let winner;
 let screenMoveDist = 100;
+let countXWins = 0;
+let countOWins = 0;
+let countTies = 0;
 
 function preload() {
   circleIMG = loadImage("Circle.png");
@@ -43,7 +47,7 @@ function windowResized() {
 function draw() {
   background(220);
   displayGrid();
-  displayText();
+  setText();
   checkForWinner();
 }
 
@@ -129,18 +133,27 @@ function checkForWinner() {
   winner = checkThreeInARow();
   if (winner === 1) { // Player X
     console.log("Player X wins!");
-    text("Player X wins!", 50, windowHeight - 100);
-    noLoop(); // Stop the draw loop to prevent further moves
+    text("Player X wins!", height/2, height/2);
+
+    countXWins+=1;
+
+    playAgain();
   } 
   else if (winner === 2) { // Player O
     console.log("Player O wins!");
-    text("Player O wins!", 50, windowHeight - 100);
-    noLoop(); // Stop the draw loop to prevent further moves
+    text("Player O wins!", height/2, height/2);
+
+    countOWins+=1;
+
+    playAgain();
   } 
   else if (checkTie()) {  //No winner
     console.log("It's a tie!");
-    text("It's a tie!", 50, windowHeight - 100);
-    noLoop(); // Stop the draw loop to prevent further moves
+    text("It's a tie!", height/2, height/2);
+
+    countTies+=1;
+
+    playAgain();
   }
 }
 
@@ -199,9 +212,17 @@ function findWinningMove(player) {
   return null; // No winning move found
 }
 
-function displayText() {
+function playAgain() {
+  // Function that will show smth clickable for playing tic tac toe again, saving previous results of games
+}
+
+function setText() {
   textSize(32);
   fill(255);
   stroke(0);
   strokeWeight(4);
+
+  text("Ties: " + countTies, screenMoveDist + cellSize * 2, height - 100);
+  text("O wins: " + countOWins, screenMoveDist + cellSize, height - 100);
+  text("X wins: " + countXWins, screenMoveDist, height - 100);
 }
