@@ -54,7 +54,7 @@ function windowResized() {
   else {
     resizeCanvas(windowHeight, windowHeight);
   }
-  cellSize = (height-200)/GRID_SIZE;
+  cellSize = (height-300)/GRID_SIZE;
 
   buttonX = width / 2 - buttonWidth / 2;
   buttonY = height / 2 + 250;
@@ -72,7 +72,7 @@ function draw() {
 
   if (gameOver) {
     textAlign(CENTER, CENTER);
-    textSize(48);
+    textSize(cellSize/2);
     fill(180);
     text(resultText, width / 2, height / 2 - screenMoveDist);  // Displaying text in the center
   }
@@ -105,7 +105,6 @@ function mousePressed() {
   checkForWinner();
 }
 
-
 function toggleCell(x, y) {
   if (grid[y][x] === 0 && playerTurn) {
     grid[y][x] = 1;
@@ -124,9 +123,6 @@ function displayGrid() {
       if (grid[y][x] === 1) { // Player X
         image(xIMG, x * cellSize + screenMoveDist, y * cellSize, cellSize, cellSize);
       }
-      else if (grid[y][x] === 0) { // Empty spot
-        fill("white");
-      } 
       else if (grid[y][x] === 2) { // Player O
         image(circleIMG, x * cellSize + screenMoveDist, y * cellSize, cellSize, cellSize);
       }
@@ -135,20 +131,19 @@ function displayGrid() {
 }
 
 function displayPlayAgainButton() {
-  buttonWidth = 200;
-  buttonHeight = 60;
+  buttonWidth = cellSize*20/6;
+  buttonHeight = cellSize*6/20;
   buttonX = width / 2 - buttonWidth / 2;
-  buttonY = height / 2 + 250;
+  buttonY = cellSize*3 + buttonHeight;
 
   // Drawing button
   fill(0, 200, 100);
-  rect(buttonX, buttonY, buttonWidth, buttonHeight, 10);
+  rect(buttonX, buttonY, buttonWidth, buttonHeight, 100);
   fill(255);
-  textSize(24);
+  textSize(cellSize/5);
   textAlign(CENTER, CENTER);
-  text("Play Again", buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+  text("Play Again", buttonX + buttonWidth/2, buttonY + buttonHeight / 2);
 }
-
  
 function checkThreeInARow() {
   for (let i = 0; i < 3; i++) {
@@ -277,12 +272,13 @@ function resetGame() {
 }
 
 function setText() {
-  textSize(32);
   fill(255);
   stroke(0);
   strokeWeight(4);
+  textSize(cellSize/5);
+  textAlign(CENTER, BOTTOM);
 
-  text("Ties: " + countTies, screenMoveDist + cellSize * 2, height - 100);
-  text("O wins: " + countOWins, screenMoveDist + cellSize, height - 100);
-  text("X wins: " + countXWins, screenMoveDist, height - 100);
+  text("Ties: " + countTies, screenMoveDist + cellSize * 2.5, height - 100);
+  text("O wins: " + countOWins, screenMoveDist + cellSize * 1.5, height - 100);
+  text("X wins: " + countXWins, screenMoveDist + cellSize / 2, height - 100);
 }
