@@ -4,7 +4,16 @@
 //
 // neural net
 // Extra for Experts:
-// location.reload();
+/* 
+  - In this code, the AI ​​is implemented using a simple algorithm like neural net 
+that first tries to find a winning move, then blocks the player's 
+potential winning moves, and if there are none, makes a random move.
+  - The game uses arrays for displaying Cross Player(X) and Circle Player(O), 
+as well as for carrying out logic for player O.
+  - Adaptation to screen size.
+  - Using Two Dimentional Arrays.
+  - Text Usage.
+*/
 
 let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let cellSize;
@@ -13,10 +22,14 @@ let playerTurn = true;
 let circleIMG;
 let xIMG;
 let winner;
-let screenMoveDist = 100;
+let screenMoveDist = 150;
 let countXWins = 0;
 let countOWins = 0;
 let countTies = 0;
+let showPlayAgainButton = false;
+let buttonX, buttonY, buttonWidth, buttonHeight;
+let gameOver = false;
+let resultText = "";
 
 function preload() {
   circleIMG = loadImage("Circle.png");
@@ -30,7 +43,7 @@ function setup() {
   else {
     createCanvas(windowHeight, windowHeight);
   }
-  cellSize = (height-200)/GRID_SIZE;
+  cellSize = (height-300)/GRID_SIZE;
 }
 
 // Creating changeble screen
@@ -42,6 +55,9 @@ function windowResized() {
     resizeCanvas(windowHeight, windowHeight);
   }
   cellSize = (height-200)/GRID_SIZE;
+
+  buttonX = width / 2 - buttonWidth / 2;
+  buttonY = height / 2 + 250;
 }
 
 function draw() {
@@ -49,15 +65,35 @@ function draw() {
   displayGrid();
   setText();
   checkForWinner();
+
+  if (showPlayAgainButton) {
+    displayPlayAgainButton();
+  }
+
+  if (gameOver) {
+    textAlign(CENTER, CENTER);
+    textSize(48);
+    fill(180);
+    text(resultText, width / 2, height / 2 - screenMoveDist);  // Displaying text in the center
+  }
 }
 
 // Getting the x and y pos 
 function mousePressed() {
-  if (playerTurn) {
+  if (showPlayAgainButton) {
+    // Check for clicking on button
+    if (mouseX > buttonX && mouseX < buttonX + buttonWidth &&
+        mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+      resetGame(); // Reset the game when you press the button
+      return;
+    }
+  }
+
+  if (playerTurn && !showPlayAgainButton) {
     let x = Math.floor((mouseX-screenMoveDist)/cellSize);
     let y = Math.floor(mouseY/cellSize);
 
-    if (grid[y][x] === 0) {
+    if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE && grid[y][x] === 0) {
       toggleCell(x, y);
       playerTurn = false;
 
@@ -68,6 +104,7 @@ function mousePressed() {
   }
   checkForWinner();
 }
+
 
 function toggleCell(x, y) {
   if (grid[y][x] === 0 && playerTurn) {
@@ -82,6 +119,7 @@ function toggleCell(x, y) {
 function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) { // Vertical
     for (let x = 0; x < GRID_SIZE; x++) { // Horizontal
+      noFill();
       square(x * cellSize + screenMoveDist, y * cellSize, cellSize);
       if (grid[y][x] === 1) { // Player X
         image(xIMG, x * cellSize + screenMoveDist, y * cellSize, cellSize, cellSize);
@@ -95,6 +133,22 @@ function displayGrid() {
     } 
   }
 }
+
+function displayPlayAgainButton() {
+  buttonWidth = 200;
+  buttonHeight = 60;
+  buttonX = width / 2 - buttonWidth / 2;
+  buttonY = height / 2 + 250;
+
+  // Drawing button
+  fill(0, 200, 100);
+  rect(buttonX, buttonY, buttonWidth, buttonHeight, 10);
+  fill(255);
+  textSize(24);
+  textAlign(CENTER, CENTER);
+  text("Play Again", buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+}
+
  
 function checkThreeInARow() {
   for (let i = 0; i < 3; i++) {
@@ -130,29 +184,27 @@ function checkTie() {
 }
 
 function checkForWinner() { 
+  if (gameOver){
+    return; // If the game is already over, do nothing
+  } 
+
   winner = checkThreeInARow();
   if (winner === 1) { // Player X
-    console.log("Player X wins!");
-    text("Player X wins!", height/2, height/2);
-
-    countXWins+=1;
-
+    resultText = "Player X wins!";
+    countXWins++;
+    gameOver = true; 
     playAgain();
   } 
   else if (winner === 2) { // Player O
-    console.log("Player O wins!");
-    text("Player O wins!", height/2, height/2);
-
-    countOWins+=1;
-
+    resultText = "Player O wins!";
+    countOWins++;
+    gameOver = true; 
     playAgain();
   } 
   else if (checkTie()) {  //No winner
-    console.log("It's a tie!");
-    text("It's a tie!", height/2, height/2);
-
-    countTies+=1;
-
+    resultText = "It's a  tie!";
+    countTies++;
+    gameOver = true; 
     playAgain();
   }
 }
@@ -214,6 +266,14 @@ function findWinningMove(player) {
 
 function playAgain() {
   // Function that will show smth clickable for playing tic tac toe again, saving previous results of games
+  showPlayAgainButton = true; 
+}
+
+function resetGame() {
+  grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]; // Clearing grid
+  playerTurn = true; // Player X  turn
+  showPlayAgainButton = false; // Hide "Play Again" button
+  gameOver = false; 
 }
 
 function setText() {
