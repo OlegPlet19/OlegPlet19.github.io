@@ -19,6 +19,7 @@
 - [Walker-OOP-Array-Demo](WalkerOOPAarray)
 - [Firework-OOP-Demo](FireworksOOP)
 - [Collide-2D-Library-Demo](CollideDemo)
+- [Local-Storage-Semo](LocalStorageDemo)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
