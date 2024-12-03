@@ -20,6 +20,7 @@
 - [Firework-OOP-Demo](FireworksOOP)
 - [Collide-2D-Library-Demo](CollideDemo)
 - [Local-Storage-Semo](LocalStorageDemo)
+- [Inheritance-Demo](Inheritance)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
