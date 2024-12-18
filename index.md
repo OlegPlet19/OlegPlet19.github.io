@@ -21,6 +21,8 @@
 - [Collide-2D-Library-Demo](CollideDemo)
 - [Local-Storage-Semo](LocalStorageDemo)
 - [Inheritance-Demo](Inheritance)
+- [Fractal-Circles-Demo](FractalCircles)
+- [Serpinskyi-Triangle-Demo](SerpinskyiTriangle)
 
 # Projects
 - [Interactive-Scene](InteractiveScene)
